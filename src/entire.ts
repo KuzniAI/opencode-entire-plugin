@@ -1,13 +1,4 @@
-// Entire CLI plugin for OpenCode — hand-ported to the OpenCode V2 plugin API.
-//
-// ⚠️ Read README.md in this directory before touching this file. It documents
-// why this file diverges from what `entire enable --agent opencode` generates
-// (that V1 output fails to load on OpenCode v2 with ref err_757dac0c), how to
-// restore this port after a regeneration, and the `@opencode/plugin`
-// dependency pinned in ../package.json.
-//
-// Uses node:child_process so hooks work under both Bun (OpenCode server) and
-// Node (OpenCode Desktop's Electron sidecar). See entireio/cli#2014.
+// Entire CLI plugin for OpenCode (V2 plugin API). See README.md for background.
 import { spawn, spawnSync } from "node:child_process";
 import { Plugin } from "@opencode/plugin";
 
@@ -148,7 +139,6 @@ export default Plugin.define({
 
     // Apply the one-time Entire context injection captured at turn-start by
     // appending it to the system prompt for this LLM call.
-    // (V1: experimental.chat.system.transform)
     await ctx.session.hook("context", (event) => {
       if (pendingInjection && Array.isArray(event.system)) {
         event.system.push({ type: "text", text: pendingInjection });
@@ -156,7 +146,7 @@ export default Plugin.define({
       }
     });
 
-    // (V1: the returned `event` hook) Subscribe to the server's public event
+    // Subscribe to the server's public event
     // stream. The stream carries events from every location the server hosts,
     // so handleEvent filters to this plugin's location first.
     const controller = new AbortController();
@@ -183,7 +173,7 @@ export default Plugin.define({
       const sessionID: string | undefined = data.sessionID;
 
       switch (event.type) {
-        // (V1: session.created) Start tracking a newly created session.
+        // Start tracking a newly created session.
         case "session.created": {
           if (!sessionID) break;
           // Reset per-session tracking state when switching sessions.
@@ -195,7 +185,7 @@ export default Plugin.define({
           break;
         }
 
-        // (V1: message.part.updated on the first user text part) The prompt
+        // The prompt
         // entering the session inbox is the earliest signal that carries the
         // prompt text, and it arrives before the first LLM call.
         case "session.inbox.enqueued": {
@@ -217,7 +207,7 @@ export default Plugin.define({
           break;
         }
 
-        // (V1 fallback: message.updated on the user message itself) If the
+        // If the
         // enqueued event was missed, fall back to the delivered event and
         // fetch the prompt text through the session context.
         case "session.inbox.delivered": {
@@ -245,14 +235,13 @@ export default Plugin.define({
         }
 
         // Track the model used by the most recent assistant step
-        // (V1: message.updated on assistant messages' modelID)
         case "session.step.started": {
           const model = data.model;
           if (model?.id) currentModel = String(model.id);
           break;
         }
 
-        // (V1: session.status idle) A finished execution ends the turn. Some
+        // A finished execution ends the turn. Some
         // flows surface other idle signals instead, so the session.status and
         // session.idle cases below act as fallbacks; turnActive guards them
         // so turn-end fires exactly once per turn.
@@ -306,7 +295,7 @@ export default Plugin.define({
           break;
         }
 
-        // (V1: server.instance.disposed) Fires when this location shuts down
+        // Fires when this location shuts down
         // (e.g. `opencode run` exit) or the whole server disposes — the only
         // reliable way to end sessions on exit, since session.deleted fires
         // only on explicit user deletion.
@@ -331,7 +320,7 @@ export default Plugin.define({
       }
     }
 
-    // (V1: the returned dispose hook) Abort the event subscription on unload.
+    // Abort the event subscription on unload.
     return () => {
       controller.abort();
     };
