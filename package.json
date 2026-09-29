@@ -17,11 +17,11 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "check": "tsc --noEmit",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@opencode/plugin": "^2.0.19"
