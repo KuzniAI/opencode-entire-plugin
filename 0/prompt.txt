@@ -1,0 +1,5 @@
+add editorconfig with basic settings for typescript and bun that sets LF and works on Windows
+
+---
+
+add the .gitattributes too
