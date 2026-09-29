@@ -1,0 +1,1 @@
+install oxfmt and oxlint in this project. Setup with default rules, add scripts in package.json, add rules to use them in AGENTS.md
