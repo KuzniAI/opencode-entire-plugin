@@ -1,0 +1,28 @@
+{
+  "name": "opencode-entire-plugin",
+  "version": "1.0.0",
+  "description": "Unofficial patched version of Entire's OpenCode integration.",
+  "author": "KuźnAI",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@opencode/plugin": "^2.0.19"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KuzniAI/opencode-entire-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KuzniAI/opencode-entire-plugin/issues"
+  },
+  "homepage": "https://github.com/KuzniAI/opencode-entire-plugin#readme"
+}
