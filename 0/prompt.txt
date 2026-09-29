@@ -1,0 +1,1 @@
+Update AGENTS.md with anything that is required from a bun project so it does not node instead
