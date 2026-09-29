@@ -1,0 +1,1 @@
+Streamline docs for this project. Move contents of story comments from entire.ts and and contents of src/README into README
